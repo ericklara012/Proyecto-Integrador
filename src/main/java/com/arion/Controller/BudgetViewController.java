@@ -1,37 +1,38 @@
 package com.arion.Controller;
 
-import com.arion.Model.Budget;
-import com.arion.Model.Transaction;
+import java.io.IOException;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.time.YearMonth;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import com.arion.Config.SessionManager;
+import com.arion.Model.Budget;
 import com.arion.Utils.AlertUtils;
+
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
-import javafx.geometry.Pos;
-
-import java.io.IOException;
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
 public class BudgetViewController implements Initializable {
 
@@ -40,7 +41,7 @@ public class BudgetViewController implements Initializable {
     @FXML private TableColumn<Budget, Double> limitAmountCol;
     @FXML private TableColumn<Budget, Double> spentAmountCol;
     @FXML private TableColumn<Budget, Double> remainingCol;
-    @FXML private TableColumn<Budget, ProgressBar> progressCol;
+    @FXML private TableColumn<Budget, Budget> progressCol;
     @FXML private TableColumn<Budget, Budget> actionsCol;
     @FXML private Button addNewBudgetButton;
     @FXML private ListView<String> alertsListView;
@@ -134,35 +135,45 @@ public class BudgetViewController implements Initializable {
             }
         });
 
-        progressCol.setCellValueFactory(cellData -> {
-            Budget budget = cellData.getValue();
-            double spent = Budget.getSpentAmountForCategoryInMonth(
-                SessionManager.getInstance().getCurrentUserId(),
-                budget.getCategory(),
-                budget.getPeriodYearMonth()
-            );
-            double percentage = spent / budget.getLimitAmount();
-
-            ProgressBar progressBar = new ProgressBar(percentage);
-            progressBar.setPrefWidth(140);
-
-            if (percentage >= 1.0) {
-                progressBar.setStyle("-fx-accent: red;");
-            } else if (percentage >= 0.8) {
-                progressBar.setStyle("-fx-accent: orange;");
-            } else {
-                progressBar.setStyle("-fx-accent: green;");
+        progressCol.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue()));
+        progressCol.setCellFactory(col -> new TableCell<Budget, Budget>() {
+            private final ProgressBar progressBar = new ProgressBar();
+            
+            {
+                progressBar.setPrefWidth(140);
+                setGraphic(progressBar);
             }
-
-            return new ReadOnlyObjectWrapper<>(progressBar);
-        });
-        progressCol.setCellFactory(col -> new TableCell<Budget, ProgressBar>() {
+            
             @Override
-            protected void updateItem(ProgressBar progressBar, boolean empty) {
-                super.updateItem(progressBar, empty);
-                if (empty || progressBar == null) {
+            protected void updateItem(Budget budget, boolean empty) {
+                super.updateItem(budget, empty);
+                if (empty || budget == null) {
                     setGraphic(null);
                 } else {
+                    // Calcular el progreso actualizado
+                    double spent = Budget.getSpentAmountForCategoryInMonth(
+                        SessionManager.getInstance().getCurrentUserId(),
+                        budget.getCategory(),
+                        budget.getPeriodYearMonth()
+                    );
+                    double percentage = budget.getLimitAmount() > 0 ? spent / budget.getLimitAmount() : 0.0;
+                    
+                    // Limitar el porcentaje a un máximo razonable para visualización
+                    if (percentage > 1.0) {
+                        percentage = 1.0;
+                    }
+                    
+                    progressBar.setProgress(percentage);
+                    
+                    // Actualizar el color según el porcentaje
+                    if (percentage >= 1.0) {
+                        progressBar.setStyle("-fx-accent: red;");
+                    } else if (percentage >= 0.8) {
+                        progressBar.setStyle("-fx-accent: orange;");
+                    } else {
+                        progressBar.setStyle("-fx-accent: green;");
+                    }
+                    
                     setGraphic(progressBar);
                 }
             }
@@ -214,6 +225,9 @@ public class BudgetViewController implements Initializable {
         for (Budget budget : Budget.getAllActive(userId)) {
             budgetsList.add(budget);
         }
+        
+        // Refrescar la tabla para actualizar las barras de progreso
+        budgetsTable.refresh();
     }
 
     private void loadBudgetAlerts() {
