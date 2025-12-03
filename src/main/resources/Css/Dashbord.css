@@ -36,6 +36,25 @@
     -fx-transition: none;
 }
 
+/* Eliminar efecto temblorino al pasar el cursor sobre inputs */
+.combo-box:hover,
+.date-picker:hover,
+.text-area:hover,
+.text-field:hover,
+.input-group:hover {
+    -fx-transition: none;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 2, 0, 0, 1);
+}
+
+.combo-box:focused:hover,
+.date-picker:focused:hover,
+.text-area:focused:hover,
+.text-field:focused:hover,
+.input-group:focused-within:hover {
+    -fx-transition: none;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.25), 5, 0, 0, 0);
+}
+
 .label {
     -fx-text-fill: #5A5A5A;
 }
@@ -123,7 +142,19 @@
     -fx-border-width: 15; /* Ancho del "agujero" */
 }
 .chart-pie-label-line, .chart-pie-label { -fx-opacity: 0; } /* Ocultar etiquetas */
-.chart-legend { -fx-padding: 20px 0 0 0; }
+.chart-legend { 
+    -fx-padding: 20px 0 0 0;
+    -fx-alignment: center;
+}
+
+.chart-legend-item {
+    -fx-alignment: center;
+}
+
+.chart-legend-item .label {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
 
 /* Colores para las categorías del gráfico */
 .default-color0.chart-pie { -fx-pie-color: #4A90E2; } /* Housing */

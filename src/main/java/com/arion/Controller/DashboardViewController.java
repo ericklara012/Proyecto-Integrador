@@ -1,7 +1,6 @@
 package com.arion.Controller;
 
 import com.arion.Model.Transaction;
-import com.arion.Model.Budget;
 import com.arion.Config.SessionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +15,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.stream.Collectors;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -25,10 +33,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.time.YearMonth;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.ResourceBundle;
 
 public class DashboardViewController implements Initializable {
@@ -40,8 +48,14 @@ public class DashboardViewController implements Initializable {
     @FXML private Label netBalanceLabel;
     @FXML private Label usernameLabel;
     @FXML private Button budgetsButton;
+    @FXML private ComboBox<String> categoryFilterComboBox;
+    @FXML private DatePicker startDatePicker;
+    @FXML private DatePicker endDatePicker;
+    @FXML private Button downloadTransactionsButton;
+    @FXML private Button clearFiltersButton;
 
     private ObservableList<Transaction> transactions;
+    private FilteredList<Transaction> filteredTransactions;
     private DecimalFormat currencyFormat = new DecimalFormat("$#,##0.00");
 
     @Override
@@ -49,6 +63,7 @@ public class DashboardViewController implements Initializable {
         loadUserData();
         setupPieChart();
         setupTransactionList();
+        setupFilters();
         updateSummaryLabels();
 
         // Configurar el botón de presupuestos
@@ -89,28 +104,48 @@ public class DashboardViewController implements Initializable {
                     Collectors.summingDouble(Transaction::getAmount)
                 ));
 
+        // Calcular el total para calcular porcentajes
+        double totalExpenses = expensesByCategory.values().stream().mapToDouble(Double::doubleValue).sum();
+
         // Crear datos para el gráfico de pastel
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
         if (expensesByCategory.isEmpty()) {
             pieChartData.add(new PieChart.Data("Sin gastos", 1));
         } else {
-            expensesByCategory.forEach((category, amount) ->
-                pieChartData.add(new PieChart.Data(category, amount))
-            );
+            expensesByCategory.forEach((category, amount) -> {
+                double percentage = totalExpenses > 0 ? (amount / totalExpenses) * 100 : 0;
+                String label = String.format("%s\n%s (%.1f%%)", category, currencyFormat.format(amount), percentage);
+                PieChart.Data data = new PieChart.Data(label, amount);
+                pieChartData.add(data);
+            });
         }
-
+        
         expensesPieChart.setData(pieChartData);
         expensesPieChart.setTitle(null);
         expensesPieChart.setMinSize(PieChart.USE_PREF_SIZE, PieChart.USE_PREF_SIZE);
         expensesPieChart.setPrefSize(500, 400);
         expensesPieChart.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         expensesPieChart.setLabelsVisible(true);
+        
+        // Agregar tooltips después de que el gráfico se renderice
+        // Usar Platform.runLater para asegurar que los nodos estén creados
+        javafx.application.Platform.runLater(() -> {
+            expensesPieChart.getData().forEach(data -> {
+                if (data.getNode() != null && !data.getName().equals("Sin gastos")) {
+                    String[] parts = data.getName().split("\n");
+                    if (parts.length >= 2) {
+                        String category = parts[0];
+                        String amountAndPercent = parts[1];
+                        Tooltip tooltip = new Tooltip(String.format("Categoría: %s\n%s", category, amountAndPercent));
+                        Tooltip.install(data.getNode(), tooltip);
+                    }
+                }
+            });
+        });
     }
 
     private void setupTransactionList() {
-        transactionsListView.setItems(transactions);
-
         // Configurar doble clic para editar transacciones
         transactionsListView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && transactionsListView.getSelectionModel().getSelectedItem() != null) {
@@ -159,6 +194,123 @@ public class DashboardViewController implements Initializable {
             }
         });
     }
+    
+    private void setupFilters() {
+        // Crear lista filtrada
+        filteredTransactions = new FilteredList<>(transactions, p -> true);
+        transactionsListView.setItems(filteredTransactions);
+        
+        // Cargar categorías para el filtro
+        Set<String> categories = new HashSet<>();
+        for (Transaction t : transactions) {
+            if (t.getCategory() != null && !t.getCategory().isEmpty()) {
+                categories.add(t.getCategory());
+            }
+        }
+        categoryFilterComboBox.getItems().addAll("Todas las categorías");
+        categoryFilterComboBox.getItems().addAll(categories.stream().sorted().collect(Collectors.toList()));
+        categoryFilterComboBox.setValue("Todas las categorías");
+        
+        // Configurar filtros
+        categoryFilterComboBox.setOnAction(e -> applyFilters());
+        startDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+        endDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+    }
+    
+    private void applyFilters() {
+        filteredTransactions.setPredicate(transaction -> {
+            // Filtro por categoría
+            String selectedCategory = categoryFilterComboBox.getValue();
+            if (selectedCategory != null && !selectedCategory.equals("Todas las categorías")) {
+                if (!selectedCategory.equals(transaction.getCategory())) {
+                    return false;
+                }
+            }
+            
+            // Filtro por fecha
+            LocalDate startDate = startDatePicker.getValue();
+            LocalDate endDate = endDatePicker.getValue();
+            
+            if (startDate != null && transaction.getDate().isBefore(startDate)) {
+                return false;
+            }
+            
+            if (endDate != null && transaction.getDate().isAfter(endDate)) {
+                return false;
+            }
+            
+            return true;
+        });
+    }
+    
+    @FXML
+    private void clearFilters() {
+        categoryFilterComboBox.setValue("Todas las categorías");
+        startDatePicker.setValue(null);
+        endDatePicker.setValue(null);
+        applyFilters();
+    }
+    
+    @FXML
+    private void downloadTransactions() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Guardar Reporte de Transacciones");
+            fileChooser.setInitialFileName("transacciones_filtradas");
+            
+            fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Archivos PDF", "*.pdf"),
+                new FileChooser.ExtensionFilter("Archivos Excel", "*.xlsx")
+            );
+            
+            Stage stage = (Stage) transactionsListView.getScene().getWindow();
+            File file = fileChooser.showSaveDialog(stage);
+            
+            if (file != null) {
+                String fileName = file.getName().toLowerCase();
+                List<Transaction> transactionsToExport = new ArrayList<>(filteredTransactions);
+                
+                if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
+                    generateExcel(file, transactionsToExport);
+                    com.arion.Utils.AlertUtils.showSuccessAlert("Éxito", "Reporte Excel generado exitosamente");
+                } else {
+                    if (!fileName.endsWith(".pdf")) {
+                        file = new File(file.getAbsolutePath() + ".pdf");
+                    }
+                    generatePDF(file, transactionsToExport);
+                    com.arion.Utils.AlertUtils.showSuccessAlert("Éxito", "Reporte PDF generado exitosamente");
+                }
+            }
+        } catch (Exception e) {
+            com.arion.Utils.AlertUtils.showErrorAlert("Error", "Error al generar el reporte: " + e.getMessage());
+        }
+    }
+    
+    private void generatePDF(File file, List<Transaction> transactionsToExport) throws Exception {
+        int currentUserId = SessionManager.getInstance().getCurrentUserId();
+        String username = SessionManager.getInstance().getCurrentUsername();
+        
+        LocalDate startDate = startDatePicker.getValue() != null ? startDatePicker.getValue() : LocalDate.now().minusMonths(12);
+        LocalDate endDate = endDatePicker.getValue() != null ? endDatePicker.getValue() : LocalDate.now();
+        
+        com.arion.Model.Reporte reporte = com.arion.Model.Reporte.crearReporte(currentUserId, username, startDate, endDate);
+        reporte.setMovimientos(transactionsToExport);
+        reporte.initiarDatos(transactionsToExport);
+        reporte.generarPDFDOCUMENTO(file.getAbsolutePath());
+    }
+    
+    private void generateExcel(File file, List<Transaction> transactionsToExport) throws Exception {
+        int currentUserId = SessionManager.getInstance().getCurrentUserId();
+        String username = SessionManager.getInstance().getCurrentUsername();
+        
+        LocalDate startDate = startDatePicker.getValue() != null ? startDatePicker.getValue() : LocalDate.now().minusMonths(12);
+        LocalDate endDate = endDatePicker.getValue() != null ? endDatePicker.getValue() : LocalDate.now();
+        
+        com.arion.Model.Reporte reporte = com.arion.Model.Reporte.crearReporte(currentUserId, username, startDate, endDate);
+        reporte.setMovimientos(transactionsToExport);
+        reporte.initiarDatos(transactionsToExport);
+        reporte.generarExcelDOCUMENTO(file.getAbsolutePath());
+    }
 
     private void updateSummaryLabels() {
         int currentUserId = SessionManager.getInstance().getCurrentUserId();
@@ -183,6 +335,16 @@ public class DashboardViewController implements Initializable {
         } else {
             netBalanceLabel.setStyle("-fx-text-fill: #F44336;"); // Rojo para negativo
         }
+        
+        // Agregar tooltips informativos
+        Tooltip incomeTooltip = new Tooltip("Total de ingresos del mes actual");
+        totalIncomeLabel.setTooltip(incomeTooltip);
+        
+        Tooltip expensesTooltip = new Tooltip("Total de gastos del mes actual");
+        totalExpensesLabel.setTooltip(expensesTooltip);
+        
+        Tooltip balanceTooltip = new Tooltip("Saldo total del mes actual (Ingresos - Gastos)");
+        netBalanceLabel.setTooltip(balanceTooltip);
     }
 
     // Método para refrescar los datos (útil cuando se agrega una nueva transacción)
