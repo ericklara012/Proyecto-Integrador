@@ -4,6 +4,38 @@
     -fx-font-family: 'Arial';
 }
 
+/* Eliminar todas las transiciones y animaciones para evitar efectos temblorinos */
+* {
+    -fx-transition: none;
+    -fx-animation: none;
+}
+
+/* Deshabilitar efectos de transición en botones */
+.button {
+    -fx-transition: none;
+}
+
+.button:hover {
+    -fx-transition: none;
+}
+
+/* Deshabilitar efectos de transición en campos de formulario */
+.combo-box,
+.date-picker,
+.text-area,
+.text-field,
+.input-group {
+    -fx-transition: none;
+}
+
+.combo-box:focused,
+.date-picker:focused,
+.text-area:focused,
+.text-field:focused,
+.input-group:focused-within {
+    -fx-transition: none;
+}
+
 .label {
     -fx-text-fill: #5A5A5A;
 }
@@ -192,6 +224,7 @@
 .icon-form {
     -fx-scale-x: 1.4;
     -fx-scale-y: 1.4;
+    -fx-transition: none;
 }
 
 /* --- Estilos para Inputs del Formulario --- */
@@ -261,6 +294,24 @@
     -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.25), 5, 0, 0, 0);
 }
 
+/* Asegurar visibilidad del texto en ComboBox */
+.combo-box .text {
+    -fx-fill: #212529;
+    -fx-font-size: 14px;
+}
+
+.combo-box:focused .text {
+    -fx-fill: #212529;
+}
+
+.combo-box .text-input {
+    -fx-text-fill: #212529;
+}
+
+.combo-box:focused .text-input {
+    -fx-text-fill: #212529;
+}
+
 /* Específico para DatePicker */
 .date-picker > .text-field {
     -fx-background-color: transparent;
@@ -289,6 +340,35 @@
 
 .combo-box .arrow-button .arrow {
     -fx-background-color: #6c757d;
+}
+
+/* Asegurar que el texto del ComboBox sea visible */
+.combo-box .list-cell {
+    -fx-text-fill: #212529;
+    -fx-background-color: white;
+}
+
+.combo-box .list-cell:selected {
+    -fx-text-fill: #212529;
+    -fx-background-color: #E3F2FD;
+}
+
+.combo-box .list-view {
+    -fx-background-color: white;
+}
+
+.combo-box .list-view .list-cell:hover {
+    -fx-background-color: #F5F5F5;
+}
+
+/* Texto del ComboBox cuando está seleccionado */
+.combo-box .text-input {
+    -fx-text-fill: #212529;
+    -fx-prompt-text-fill: #adb5bd;
+}
+
+.combo-box:focused .text-input {
+    -fx-text-fill: #212529;
 }
 
 /* TextArea específico */
@@ -359,6 +439,38 @@
 .text-area:hover,
 .input-group:hover {
     -fx-border-color: #80bdff;
+    -fx-transition: none;
+}
+
+/* Asegurar que el ComboBox muestre el valor seleccionado correctamente */
+.combo-box .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+}
+
+.combo-box .list-view .list-cell {
+    -fx-text-fill: #212529;
+    -fx-background-color: white;
+    -fx-padding: 8px 12px;
+}
+
+.combo-box .list-view .list-cell:hover {
+    -fx-background-color: #F5F5F5;
+    -fx-text-fill: #212529;
+}
+
+.combo-box .list-view .list-cell:selected {
+    -fx-background-color: #E3F2FD;
+    -fx-text-fill: #212529;
+}
+
+/* Asegurar que el texto del botón del ComboBox sea visible */
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box .arrow-button:hover {
+    -fx-background-color: transparent;
 }
 
 /* --- Estilos para la Vista de Reportes --- */

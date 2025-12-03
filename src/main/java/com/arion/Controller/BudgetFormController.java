@@ -53,6 +53,26 @@ public class BudgetFormController implements Initializable {
                 limitAmountField.setText(oldValue);
             }
         });
+        
+        // Agregar tooltips
+        setupTooltips();
+    }
+    
+    private void setupTooltips() {
+        Tooltip categoryTooltip = new Tooltip("Selecciona una categoría de la lista para tu presupuesto");
+        categoryComboBox.setTooltip(categoryTooltip);
+        
+        Tooltip monthTooltip = new Tooltip("Selecciona el mes y año para este presupuesto");
+        monthYearComboBox.setTooltip(monthTooltip);
+        
+        Tooltip amountTooltip = new Tooltip("Ingresa el límite máximo de gasto para esta categoría");
+        limitAmountField.setTooltip(amountTooltip);
+        
+        Tooltip saveTooltip = new Tooltip("Guardar el presupuesto");
+        saveButton.setTooltip(saveTooltip);
+        
+        Tooltip cancelTooltip = new Tooltip("Cancelar y cerrar el formulario");
+        cancelButton.setTooltip(cancelTooltip);
     }
 
     public void setOnSaveCallback(Runnable callback) {
@@ -121,7 +141,25 @@ public class BudgetFormController implements Initializable {
             categories.add("Educación");
             categories.add("Otros");
 
-            categoryComboBox.setItems(FXCollections.observableArrayList(categories));
+            // Ordenar las categorías alfabéticamente
+            List<String> sortedCategories = new ArrayList<>(categories);
+            sortedCategories.sort(String::compareToIgnoreCase);
+            
+            categoryComboBox.setItems(FXCollections.observableArrayList(sortedCategories));
+            
+            // Asegurar que el texto se muestre correctamente
+            categoryComboBox.setButtonCell(new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item);
+                        setStyle("-fx-text-fill: #212529;");
+                    }
+                }
+            });
         } catch (Exception e) {
             // Error al cargar categorías
         }
