@@ -1,0 +1,116 @@
+/* --- GLOBAL STYLES --- */
+.root {
+    -fx-background-color: #F8F9FA; /* Fondo gris claro */
+    -fx-font-family: 'Arial';
+}
+
+/* --- LOGO Y TÍTULOS --- */
+.logo-circle {
+    -fx-fill: #007BFF; /* Azul primario del dashboard */
+}
+.logo-text {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+.header-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E1E1E;
+}
+.header-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #888888;
+}
+
+/* --- TARJETA PRINCIPAL --- */
+.card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 5);
+    -fx-padding: 30px 40px;
+}
+.form-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* --- CAMPOS DE FORMULARIO --- */
+.form-field {
+    -fx-alignment: top-left;
+    -fx-pref-width: 320px;
+}
+.form-field .label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555;
+}
+.input-group {
+    -fx-background-color: #F8F9FA;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 0 10px;
+}
+.input-group:focused-within {
+    -fx-border-color: #007BFF; /* Resaltado azul al enfocar */
+}
+.text-field, .password-field {
+    -fx-background-color: transparent;
+    -fx-pref-height: 40px;
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-prompt-text-fill: #B0B0B0;
+}
+.icon {
+    -fx-fill: #888888;
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+    -fx-margin-right: 5px;
+}
+.icon-eye {
+    -fx-fill: #888888;
+    -fx-cursor: hand;
+}
+
+/* --- BOTONES Y ENLACES --- */
+.button-primary {
+    -fx-background-color: #007BFF; /* Azul primario */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-pref-height: 45px;
+    -fx-background-radius: 8px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.button-primary:hover {
+    -fx-background-color: #0056b3; /* Azul más oscuro */
+}
+
+.hyperlink {
+    -fx-text-fill: #007BFF;
+    -fx-border-color: transparent;
+    -fx-font-size: 13px;
+}
+.hyperlink:visited {
+    -fx-text-fill: #0056b3;
+}
+
+.check-box .box {
+    -fx-border-color: #B0B0B0;
+    -fx-border-radius: 4px;
+}
+.check-box:selected .mark {
+    -fx-background-color: #007BFF;
+}
+
+/* --- FOOTER --- */
+.footer-text, .footer-text .text {
+    -fx-font-size: 12px;
+    -fx-fill: #888888;
+}
+.footer-text .hyperlink {
+    -fx-font-size: 12px;
+}

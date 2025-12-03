@@ -1,0 +1,463 @@
+/* --- GLOBAL STYLES --- */
+.root {
+    -fx-background-color: #F8F9FA;
+    -fx-font-family: 'Arial';
+}
+
+.label {
+    -fx-text-fill: #5A5A5A;
+}
+
+/* --- HEADER --- */
+.header-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E1E1E;
+}
+
+.header-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #888888;
+}
+
+/* --- CARDS --- */
+.card {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 20px;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 5);
+}
+
+.income-card {
+    -fx-background-color: #E7F5E8;
+}
+
+.expenses-card {
+    -fx-background-color: #FDEEEE;
+}
+
+.balance-card {
+    -fx-background-color: #E9F5FE;
+}
+
+/* --- TEXT IN CARDS --- */
+.amount-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E1E1E;
+    -fx-padding: 5px 0 5px 0;
+}
+
+.amount-label-large {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E1E1E;
+    -fx-padding: 5px 0 5px 0;
+}
+
+
+.percentage-label {
+    -fx-font-size: 13px;
+}
+
+.green-text { -fx-text-fill: #2E7D32; }
+.red-text { -fx-text-fill: #C62828; }
+
+.balance-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #555;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-padding: 0 0 10px 0;
+}
+
+/* --- ICONS --- */
+.icon-up {
+    -fx-fill: #2E7D32;
+}
+
+.icon-down {
+    -fx-fill: #C62828;
+}
+
+/* --- PIE CHART --- */
+/* Estilos para hacer que el PieChart parezca un Donut Chart */
+.pie-chart .chart-pie {
+    -fx-border-color: #F8F9FA; /* Mismo color que el fondo */
+    -fx-border-width: 15; /* Ancho del "agujero" */
+}
+.chart-pie-label-line, .chart-pie-label { -fx-opacity: 0; } /* Ocultar etiquetas */
+.chart-legend { -fx-padding: 20px 0 0 0; }
+
+/* Colores para las categorías del gráfico */
+.default-color0.chart-pie { -fx-pie-color: #4A90E2; } /* Housing */
+.default-color1.chart-pie { -fx-pie-color: #50E3C2; } /* Food */
+.default-color2.chart-pie { -fx-pie-color: #4A4A4A; } /* Transportation */
+.default-color3.chart-pie { -fx-pie-color: #BD10E0; } /* Entertainment */
+.default-color4.chart-pie { -fx-pie-color: #7ED321; } /* Utilities */
+.default-color5.chart-pie { -fx-pie-color: #F5A623; } /* Other */
+
+/* --- BUTTONS --- */
+.button {
+    -fx-font-size: 14px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 8px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.button-primary {
+    -fx-background-color: #007BFF;
+    -fx-text-fill: white;
+}
+.button-primary:hover { -fx-background-color: #0056b3; }
+
+.button-secondary {
+    -fx-background-color: #00BFFF;
+    -fx-text-fill: white;
+}
+.button-secondary:hover { -fx-background-color: #009acd; }
+
+.button-tertiary {
+    -fx-background-color: white;
+    -fx-text-fill: #007BFF;
+    -fx-border-color: #007BFF;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1.5px;
+}
+.button-tertiary:hover { -fx-background-color: #E9F5FE; }
+
+/* --- LIST VIEW --- */
+.list-view {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10px 5px;
+    -fx-border-color: transparent transparent #E0E0E0 transparent;
+    -fx-border-width: 1;
+}
+.list-cell:last-child { -fx-border-width: 0; }
+
+/* Estilo para ListView sin barra de desplazamiento */
+.no-scroll-bar .scroll-bar:vertical {
+    -fx-opacity: 0;
+    -fx-max-width: 0;
+    -fx-pref-width: 0;
+}
+
+.no-scroll-bar .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+}
+
+.no-scroll-bar .corner {
+    -fx-opacity: 0;
+    -fx-max-width: 0;
+    -fx-max-height: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
+/* --- Estilos para el Formulario Modal --- */
+.form-container {
+    -fx-background-color: #FFFFFF;
+    -fx-pref-width: 450px;
+    -fx-background-radius: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 10);
+    -fx-border-color: #E8ECEF;
+    -fx-border-width: 1px;
+    -fx-border-radius: 16px;
+}
+
+.form-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.form-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #34495e;
+    -fx-padding: 0 0 0 2px;
+}
+
+.icon-form {
+    -fx-scale-x: 1.4;
+    -fx-scale-y: 1.4;
+}
+
+/* --- Estilos para Inputs del Formulario --- */
+
+/* Grupo de input para el campo de cantidad ($) */
+.input-group {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 15px;
+    -fx-spacing: 8px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 2, 0, 0, 1);
+}
+
+.input-group:focused-within {
+    -fx-border-color: #007BFF;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.25), 5, 0, 0, 0);
+}
+
+.currency-symbol {
+    -fx-font-size: 18px;
+    -fx-fill: #6c757d;
+    -fx-font-weight: bold;
+}
+
+/* TextField dentro del input-group */
+.input-group .text-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-font-size: 16px;
+    -fx-prompt-text-fill: #adb5bd;
+    -fx-text-fill: #212529;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+.input-group .text-field:focused {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+/* Estilos generales para campos de formulario */
+.combo-box,
+.date-picker,
+.text-area {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #adb5bd;
+    -fx-padding: 12px 15px;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 2, 0, 0, 1);
+}
+
+.combo-box:focused,
+.date-picker:focused,
+.text-area:focused {
+    -fx-border-color: #007BFF;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.25), 5, 0, 0, 0);
+}
+
+/* Específico para DatePicker */
+.date-picker > .text-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: #6c757d;
+}
+
+/* Específico para ComboBox */
+.combo-box-base {
+    -fx-background-color: #f8f9fa;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+.combo-box .arrow-button .arrow {
+    -fx-background-color: #6c757d;
+}
+
+/* TextArea específico */
+.text-area {
+    -fx-wrap-text: true;
+}
+
+.text-area .content {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* --- Botones del Formulario --- */
+.button-cancel {
+    -fx-background-color: #f8f9fa;
+    -fx-text-fill: #6c757d;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1.5px;
+    -fx-font-weight: 600;
+    -fx-pref-height: 45px;
+    -fx-pref-width: 100px;
+    -fx-cursor: hand;
+    -fx-background-radius: 10px;
+}
+
+.button-cancel:hover {
+    -fx-background-color: #e9ecef;
+    -fx-border-color: #adb5bd;
+    -fx-text-fill: #495057;
+}
+
+.button-primary {
+    -fx-background-color: #007BFF;
+    -fx-text-fill: white;
+    -fx-font-weight: 600;
+    -fx-pref-height: 45px;
+    -fx-pref-width: 120px;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.3), 8, 0, 0, 2);
+}
+
+.button-primary:hover {
+    -fx-background-color: #0056b3;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.4), 10, 0, 0, 3);
+}
+
+/* Mejoras adicionales para iconos */
+.icon-up {
+    -fx-fill: #28a745;
+}
+
+.icon-down {
+    -fx-fill: #dc3545;
+}
+
+/* Estilos para hover en campos */
+.combo-box:hover,
+.date-picker:hover,
+.text-area:hover,
+.input-group:hover {
+    -fx-border-color: #80bdff;
+}
+
+/* --- Estilos para la Vista de Reportes --- */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-selection-bar: #E3F2FD;
+    -fx-selection-bar-non-focused: #F5F5F5;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #F8F9FA;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 0 0 2px 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 10px;
+}
+
+.table-row-cell {
+    -fx-border-color: transparent transparent #F0F0F0 transparent;
+    -fx-border-width: 1px;
+    -fx-background-color: transparent;
+    -fx-padding: 8px;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #E3F2FD;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #F5F5F5;
+}
+
+/* Botones de acción en la tabla */
+.button-icon {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 5px;
+    -fx-cursor: hand;
+    -fx-background-radius: 15px;
+}
+
+.button-icon-edit {
+    -fx-background-color: #E3F2FD;
+}
+
+.button-icon-edit:hover {
+    -fx-background-color: #BBDEFB;
+}
+
+.button-icon-edit .icon {
+    -fx-fill: #1976D2;
+}
+
+.button-icon-delete {
+    -fx-background-color: #FFEBEE;
+}
+
+.button-icon-delete:hover {
+    -fx-background-color: #FFCDD2;
+}
+
+.button-icon-delete .icon {
+    -fx-fill: #D32F2F;
+}
+
+/* Icono de búsqueda */
+.icon {
+    -fx-fill: #6c757d;
+}
+
+/* Campo de filtro con icono */
+.input-group .icon {
+    -fx-fill: #adb5bd;
+}
+
+/* Botón de descarga */
+.button-icon-download {
+    -fx-background-color: #E8F5E8;
+    -fx-border-color: #4CAF50;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1.5px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px;
+}
+
+.button-icon-download:hover {
+    -fx-background-color: #C8E6C9;
+    -fx-border-color: #388E3C;
+}
+
+.button-icon-download .icon {
+    -fx-fill: #4CAF50;
+}
+
+.button-icon-download:hover .icon {
+    -fx-fill: #2E7D32;
+}

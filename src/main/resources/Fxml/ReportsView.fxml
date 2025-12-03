@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<VBox spacing="20.0" styleClass="card" stylesheets="@/Css/Dashbord.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arion.Controller.ReportsViewController" prefHeight="500.0">
+    <padding>
+        <Insets top="20" right="25" bottom="25" left="25" />
+    </padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <Label styleClass="section-title" text="Transacciones Recientes" />
+        <Pane HBox.hgrow="ALWAYS" />
+        <Button fx:id="downloadButton" styleClass="button-icon, button-icon-download" onAction="#downloadTransactions">
+            <graphic>
+                <SVGPath content="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" styleClass="icon" />
+            </graphic>
+            <tooltip>
+                <Tooltip text="Descargar transacciones" />
+            </tooltip>
+        </Button>
+        <HBox alignment="CENTER_LEFT" styleClass="input-group">
+            <SVGPath content="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" styleClass="icon" />
+            <TextField fx:id="filterField" promptText="Filtrar transacciones..." />
+        </HBox>
+    </HBox>
+
+    <TableView fx:id="transactionsTable" styleClass="table-view" prefHeight="350.0" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="descriptionCol" prefWidth="250.0" text="Descripción" />
+            <TableColumn fx:id="categoryCol" prefWidth="150.0" text="Categoría" />
+            <TableColumn fx:id="dateCol" prefWidth="120.0" text="Fecha" />
+            <TableColumn fx:id="amountCol" prefWidth="150.0" text="Monto" />
+            <TableColumn fx:id="actionsCol" prefWidth="120.0" text="Acciones" />
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+        </columnResizePolicy>
+    </TableView>
+</VBox>

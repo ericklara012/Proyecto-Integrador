@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="rootPane" alignment="TOP_CENTER" spacing="20.0" styleClass="form-container" stylesheets="@/Css/Dashbord.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arion.Controller.BudgetFormController">
+    <padding>
+        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+    </padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="form-header">
+        <SVGPath fx:id="formIcon" content="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" styleClass="form-icon" />
+        <Label fx:id="titleLabel" text="Nuevo Presupuesto" styleClass="form-title">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+    </HBox>
+
+    <Separator />
+
+    <VBox spacing="20.0">
+        <VBox spacing="8.0">
+            <Label text="Categoría" styleClass="form-label">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Label>
+            <ComboBox fx:id="categoryComboBox" maxWidth="Infinity" editable="true" promptText="Selecciona una categoría" style="-fx-background-radius: 5; -fx-padding: 8;" />
+        </VBox>
+
+        <VBox spacing="8.0">
+            <Label text="Mes" styleClass="form-label">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Label>
+            <ComboBox fx:id="monthYearComboBox" maxWidth="Infinity" promptText="Selecciona el mes" style="-fx-background-radius: 5; -fx-padding: 8;" />
+        </VBox>
+
+        <VBox spacing="8.0">
+            <Label text="Límite de Presupuesto" styleClass="form-label">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Label>
+            <HBox alignment="CENTER_LEFT" styleClass="input-group" style="-fx-background-color: #f5f5f5; -fx-background-radius: 5;">
+                <padding>
+                    <Insets left="10.0" />
+                </padding>
+                <Label text="" styleClass="currency-symbol">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="limitAmountField" promptText="0.00" style="-fx-background-color: transparent;" />
+            </HBox>
+        </VBox>
+    </VBox>
+
+    <Separator />
+
+    <HBox alignment="CENTER_RIGHT" spacing="15.0">
+        <padding>
+            <Insets top="10.0" />
+        </padding>
+
+        <Button fx:id="cancelButton" text="Cancelar" styleClass="button-cancel" style="-fx-background-radius: 5; -fx-padding: 10 15;">
+            <font>
+                <Font size="13.0" />
+            </font>
+        </Button>
+        <Button fx:id="saveButton" text="Guardar" styleClass="button-primary" style="-fx-background-radius: 5; -fx-padding: 10 20;">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </Button>
+    </HBox>
+
+</VBox>
